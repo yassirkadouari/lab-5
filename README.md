@@ -1,11 +1,11 @@
-# 🛡️ Write-up : OWASP UnCrackable Mobile Dashboard - Level 2
+#  Write-up : OWASP UnCrackable Mobile Dashboard - Level 2
 
-## 📝 Présentation du Challenge
+##  Présentation du Challenge
 L'objectif de ce challenge est de contourner la sécurité d'une application Android qui utilise une bibliothèque native pour valider un code secret. Contrairement au niveau 1, la logique de vérification n'est pas en Java mais en C/C++.
 
 ---
 
-## 🛠 Outils Utilisés
+## Outils Utilisés
 * **JADX-GUI** : Analyse du code Java décompilé.
 * **Ghidra** : Reverse engineering de la bibliothèque native `.so`.
 * **ADB** : Installation de l'APK et gestion de l'émulateur.
@@ -13,7 +13,7 @@ L'objectif de ce challenge est de contourner la sécurité d'une application And
 
 ---
 
-## 🔍 Étape 1 : Analyse Statique (Java)
+##  Étape 1 : Analyse Statique (Java)
 En ouvrant l'application dans **JADX-GUI**, on identifie la méthode de vérification. Le code récupère la saisie de l'utilisateur via un `EditText` et appelle une méthode native `this.m.a(string)`.
 
 
@@ -23,7 +23,7 @@ En ouvrant l'application dans **JADX-GUI**, on identifie la méthode de vérific
 
 ---
 
-## 📦 Étape 2 : Extraction de la bibliothèque native
+##  Étape 2 : Extraction de la bibliothèque native
 Comme la vérification est native, il faut extraire le fichier `libfoo.so` de l'APK.
 1. Changement de l'extension `.apk` en `.zip`.
 2. Extraction du dossier `lib/` contenant les différentes architectures (x86, x86_64, etc.).
@@ -33,7 +33,7 @@ Comme la vérification est native, il faut extraire le fichier `libfoo.so` de l'
 
 ---
 
-## ⚙️ Étape 3 : Reverse Engineering (Ghidra)
+## Étape 3 : Reverse Engineering (Ghidra)
 L'analyse de `libfoo.so` dans **Ghidra** révèle la fonction `CodeCheck_bar`. On y observe une comparaison de chaînes de caractères via `strncmp`.
 
 ### Analyse du Secret
@@ -46,7 +46,7 @@ Le pseudo-code montre que la chaîne saisie est comparée à une valeur stockée
 
 ---
 
-## 🚀 Étape 4 : Validation
+## Étape 4 : Validation
 En saisissant le secret identifié dans l'application, le message "Success!" confirme la réussite du challenge.
 
 <img width="531" height="847" alt="{FF67BF16-CE71-40AD-9538-CC876A1CB18D}" src="https://github.com/user-attachments/assets/46c6c37c-3801-44f8-9107-558c5d092b27" />
@@ -54,7 +54,7 @@ En saisissant le secret identifié dans l'application, le message "Success!" con
 
 ---
 
-## ⚠️ Résolution de problèmes (Troubleshooting)
+##  Résolution de problèmes (Troubleshooting)
 Lors du labo, l'émulateur a rencontré une erreur `No target device found` ou des services système non réactifs. Ce problème a été résolu en effectuant un **Wipe Data** sur l'appareil virtuel via le **Device Manager**.
 
 ![Device Manager](liens_vers_ton_image_device_manager.png)
